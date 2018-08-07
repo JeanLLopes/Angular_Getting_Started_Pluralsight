@@ -12,6 +12,7 @@ export class ProductListComponent  implements OnInit {
     imagemMargin = 2;
     showImage = false;
     products: IProduct[] = [];
+    errorMessage: string;
 
     // WE ADD SERVICE HERE
     // USING A ANGULAR INJECTABLE
@@ -50,8 +51,15 @@ export class ProductListComponent  implements OnInit {
 
     ngOnInit(): void {
         console.warn('OnInit Method');
-        this.products = this._productService.getProducts();
-        this.filteredProducts = this.products;
+
+        // GET HTTP IN FILE
+        this._productService.getProducts().subscribe(
+            products => {
+                this.products = products;
+                this.filteredProducts = this.products;
+            },
+            error => this.errorMessage = <any>error
+        );
     }
 
 }
